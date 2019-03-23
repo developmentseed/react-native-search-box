@@ -25,8 +25,8 @@ class Search extends PureComponent {
       expanded: false,
     };
     const { width } = Dimensions.get('window');
-    this.contentWidth = width;
-    this.middleWidth = width / 2;
+    this.contentWidth = this.props.contentWidth || width;
+    this.middleWidth = this.contentWidth / 2;
     this.cancelButtonWidth = this.props.cancelButtonWidth || 70;
 
     /**
@@ -80,9 +80,6 @@ class Search extends PureComponent {
   }
 
   onLayout = event => {
-    const contentWidth = event.nativeEvent.layout.width;
-    this.contentWidth = contentWidth;
-    this.middleWidth = contentWidth / 2;
     if (this.state.expanded) {
       this.expandAnimation();
     } else {
@@ -258,7 +255,8 @@ class Search extends PureComponent {
         style={[
           styles.container,
           this.props.backgroundColor && {
-            backgroundColor: this.props.backgroundColor
+            backgroundColor: this.props.backgroundColor,
+            width: this.props.contentWidth
           }
         ]}
         onLayout={this.onLayout}
@@ -302,7 +300,6 @@ class Search extends PureComponent {
           blurOnSubmit={this.props.blurOnSubmit}
           returnKeyType={this.props.returnKeyType || 'search'}
           keyboardType={this.props.keyboardType || 'default'}
-          keyboardAppearance={this.props.keyboardAppearance || 'default'}
           autoCapitalize={this.props.autoCapitalize}
           onFocus={this.onFocus}
           underlineColorAndroid="transparent"
@@ -526,7 +523,6 @@ Search.propTypes = {
   iconSearch: PropTypes.object,
   returnKeyType: PropTypes.string,
   keyboardType: PropTypes.string,
-  keyboardAppearance: PropTypes.string,
   autoCapitalize: PropTypes.string,
   inputHeight: PropTypes.number,
   inputBorderRadius: PropTypes.number,
